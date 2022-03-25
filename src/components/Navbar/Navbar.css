@@ -1,0 +1,15 @@
+.navbar {
+    background-color: blue;
+    color: white;
+    padding: 20px;
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .navbar h1 {
+    font-size: 18px;
+  }
+  
