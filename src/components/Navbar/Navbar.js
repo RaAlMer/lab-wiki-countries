@@ -1,11 +1,12 @@
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 export function Navbar() {
   return (
     <div className="navbar">
-      <a href="">
+      <Link to="/">
         <h1>LAB - WikiCountries</h1>
-      </a>
+      </Link>
     </div>
   );
 }
