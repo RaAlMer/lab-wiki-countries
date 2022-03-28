@@ -1,41 +1,47 @@
-import { useState, useEffect } from 'react';
-import './App.css';
-import { Navbar, CountriesList, CountryDetails } from './components';
-import countries_db from './countries.json';
-import { Route, Routes } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import "./App.css";
+import { Navbar, CountriesList, CountryDetails } from "./components";
+//import countries_db from "./countries.json"; //<= Using the JSON
+import { Route, Routes } from "react-router-dom";
+import axios from "axios";
 
 function App() {
   const [countries, setCountries] = useState([]);
 
-  useEffect(() => {
+  /* useEffect(() => { //<= Using the JSON
     setCountries(countries_db);
+  }, []); */
+
+  useEffect(() => {
+    axios
+      .get("https://ih-countries-api.herokuapp.com/countries")
+      .then((response) => {
+        setCountries(
+          response.data.sort((a, b) => (a.name.common > b.name.common ? 1 : -1)) //<= Sorting API response
+        );
+      });
+    /* fetch("https://ih-countries-api.herokuapp.com/countries") //<= Using fetch
+      .then((response) => response.json())
+      .then((data) =>
+        setCountries(
+          data.sort((a, b) => (a.name.common > b.name.common ? 1 : -1))
+        )
+      ); */
   }, []);
 
   return (
-    <div>
+    <div className="App">
       <Navbar />
       <div className="container">
-        <div className="row">
+        <div className="row text-center">
+          <CountriesList countries={countries} />
           <Routes>
             <Route
-              path="/"
-              element={
-                <div
-                  className="col-5"
-                  style={{ maxHeight: '90vh', overflow: 'scroll' }}
-                >
-                  <CountriesList countries={countries} />
-                </div>
-              }
-            />
-            <Route
               path="/:alpha3Code"
-              /* render={(props) => {
-                return <CountryDetails {...props} countries={countries} />
+              /* render={(props) => { //<= DEPRECATED IN REACT ROUTER V6
+                return <CountryDetails countries={countries} {...props} />;
               }} */
-              element={
-                  <CountryDetails countries={countries} />
-              }
+              element={<CountryDetails countries={countries} />}
             />
           </Routes>
         </div>
